@@ -1,4 +1,4 @@
-FROM nonedotone/caddy:v2.5.1
+FROM nonedotone/caddy:v2.5.2
 
 LABEL name="none" email="none@none.one"
 
