@@ -1,8 +1,8 @@
 #!/usr/bin/env bash
 
-repo=`echo $BLOG`
-repo_path="/srv/repo/blog"
-destination="/srv/public/blog"
+repo=`echo $NOTES`
+repo_path="/srv/repo/notes"
+destination="/srv/public/notes"
 
 
 function clone(){
@@ -40,30 +40,32 @@ function pull(){
     return 0
 }
 
-function hugo-generate(){
+function mdbook-generate(){
     if [ ! -d "$repo_path" ]; then
-        echo "hugo generate, path ${repo_path} not exist, return"
+        echo "mdbook generate, path ${repo_path} not exist, return"
         return 1
     fi
 
     if [ -d "$destination" ]; then
         rm -rf $destination
         if [ $? != 0 ]; then
-            echo "hugo generate, remove destination ${destination} error, return"
+            echo "mdbook generate, remove destination ${destination} error, return"
         fi
     fi
     mkdir -p $destination
     if [ $? != 0 ]; then
-        echo "hugo generate, create destination ${destination} error, return"
+        echo "mdbook generate, create destination ${destination} error, return"
         return 1
     fi
 
     cd $repo_path
-    /usr/bin/hugo -D --destination=/srv/public/blog
-    if [ $? != 0 ]; then
-        echo "hugo generate, generate static file error, return"
-        return 1
-    fi
+    for row in $(cat "$repo_path/update.json"|jq -r '.[]'); do  
+        /usr/bin/mdbook build $row --dest-dir "$destination/$row"
+        if [ $? != 0 ]; then
+            echo "mdbook generate, generate $row static file error, return"
+            return 1
+        fi
+    done
     return 0
 }
 
@@ -85,7 +87,7 @@ function hook(){
         fi
     fi
 
-    hugo-generate
+    mdbook-generate
     if [ $? != 0 ]; then
         return 1
     fi

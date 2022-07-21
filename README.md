@@ -28,6 +28,22 @@ route /hook/blog {
 }
 ```
 
+```Caddyfile
+handle {
+    root * /srv/public/notes
+}
+file_server
+
+route /hook/notes {
+    basicauth {
+        hooknotes JDJhJDE0JHJNSkMxQnd6endtQ1BvN100000000000000000000000000000000000000000000000000
+    }
+    exec bash /exec/hook-notes.sh {
+        timeout 120s
+    }
+}
+```
+
 config with docker-compose
 
 ```yml
@@ -40,7 +56,8 @@ services:
       - 80:80
       - 443:443
     environment:
-      - REPOSITORY=https://github.com/nonedotone/example.git
+      - BLOG=https://github.com/nonedotone/blogger.git
+      - NOTES=https://github.com/nonedotone/notes.git
     volumes:
 ...
 ```
