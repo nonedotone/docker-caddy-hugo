@@ -7,7 +7,7 @@ ENV MDBOOK_VERSION=0.4.20
 
 ADD hook-*.sh /exec/
 
-RUN apk add --no-cache bash upx libc6-compat libstdc++ git \
+RUN apk add --no-cache bash upx jq libc6-compat libstdc++ git \
     && wget -O /tmp/hugo.tar.gz https://github.com/gohugoio/hugo/releases/download/v${HUGO_VERSION}/hugo_extended_${HUGO_VERSION}_Linux-64bit.tar.gz \
     && wget -O /tmp/mdbook.tar.gz https://github.com/rust-lang/mdBook/releases/download/v${MDBOOK_VERSION}/mdbook-v${MDBOOK_VERSION}-x86_64-unknown-linux-gnu.tar.gz \
     && tar -xzf /tmp/hugo.tar.gz -C /tmp && mv /tmp/hugo /usr/bin/hugo \
