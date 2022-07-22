@@ -21,4 +21,4 @@ RUN apk add --no-cache bash jq libc6-compat libstdc++ git && \
     chmod +x /exec/hook-*.sh
 
 COPY --from=builder /tmp/mdbook /usr/bin/mdbook
-COPY --from=builder /tmp/mdbook /usr/bin/hugo
+COPY --from=builder /tmp/hugo /usr/bin/hugo
